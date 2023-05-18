@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather forecast</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light">Weather API</a>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput"
+                    value="">
+                <button type="submit" class="btn btn-outline-primary" id="sub">Search</button>
+
+            </form>
+        </div>
+    </nav>
+    <p class="text-center fs-2 mt-4" id="place">View the weather</p>
+
+    <div class="container">
+
+        <div class="d-flex flex-row justify-content-evenly align-items-center card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow col-md-3">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Temperature</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">°C</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Temp: <span id="temp"></span></li>
+                        <li>min: <span id="min"></span></li>
+                        <li>max: <span id="max"></span></li>
+                    </ul>
+                    <!-- <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button> -->
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow col-md-3">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Humidity</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">%</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Feels like <span id="feel"></span></li>
+                        <li>Sunrise <span id="sunrise"></span></li>
+                        <li>Sunset <span id="sunset"></span></li>
+                    </ul>
+                    <!-- <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button> -->
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow col-md-3">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Wind speed</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">Kmph</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Wind speed: <span id="wind-speed"></span></li>
+                        <li>Wind degrees <span id="wind-degree"></span></li>
+                        <li>Cloud pct <span id="cloud-pct"></span></li>
+                    </ul>
+                    <!-- <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const submit1 = document.getElementById('sub');
+        submit1.addEventListener("click", (e) => {
+            e.preventDefault();
+            let city = document.getElementById('searchInput').value;
+            document.getElementById('place').innerHTML = `View the weather of ${city}`
+            getweather(city)
+        })
+
+
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '16247a96admsh7b466fe7482badcp111903jsn26620016f907',
+                'X-RapidAPI-Host': 'weather-by-api-ninjas.p.rapidapi.com'
+            }
+        };
+        const getweather = (x) => {
+            fetch(`https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=${x}`, options)
+                .then(response => response.json())
+                .then((response) => {
+                    document.getElementById('temp').innerHTML = response.temp;
+                    document.getElementById('min').innerHTML = response.min_temp;
+                    document.getElementById('max').innerHTML = response.max_temp;
+                    document.getElementById('feel').innerHTML = response.feels_like;
+                    document.getElementById('sunrise').innerHTML = response.sunrise;
+                    document.getElementById('sunset').innerHTML = response.sunset;
+                    document.getElementById('wind-speed').innerHTML = response.wind_speed;
+                    document.getElementById('wind-degree').innerHTML = response.wind_degrees;
+                    document.getElementById('cloud-pct').innerHTML = response.cloud_pct;
+
+                })
+                .catch(err => console.log(err))
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
